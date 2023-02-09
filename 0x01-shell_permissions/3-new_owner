@@ -1,2 +1,2 @@
 #!/bin/bash
-os.chown betty -1
+os.chown betty 
