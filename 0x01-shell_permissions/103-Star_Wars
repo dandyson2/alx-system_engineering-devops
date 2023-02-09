@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "$crawl"
+echo telnet towel.blinkenlights.nl
