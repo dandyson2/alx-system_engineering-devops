@@ -1,2 +1,2 @@
 #!/bin/bash
-os.chown hello , betty_uid, -1
+os.chown hello, betty_uid, -1
