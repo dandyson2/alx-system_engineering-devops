@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
-# Bash (init) script manage_my_process
+# This script indefinitely writes "I am alive!" to the file /tmp/my_process
 
+# Function to handle termination signals
+cleanup() {
+    echo "Terminating the script..."
+    exit 0
+}
 
-while true
-do
-  echo "I am alive!" >> /tmp/my_process
-  sleep 2
+# Register the cleanup function to handle termination signals
+trap cleanup INT TERM
+
+# Infinite loop to write "I am alive!" to the file /tmp/my_process
+while true; do
+    echo "I am alive!" >>/tmp/my_process
+
+    # Add a sync command to flush the buffer to the disk (optional)
+    sync
+
+    # Sleep for 2 seconds
+    sleep 2
 done
