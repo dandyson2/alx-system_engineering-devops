@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Bash (init) script 101-manage_my_process
+
+
+# Function to check if manage_my_process is already running
+is_process_running() {
+    if [ -f "/var/run/my_process.pid" ]; then
+        pid=$(cat /var/run/my_process.pid)
+        if ps -p $pid > /dev/null; then
+            return 0   # Process is running
+        else
+            return 1   # Process is not running
+        fi
+    else
+        return 1   # Process is not running
+    fi
+}
+
+# Check for the arguments and call the appropriate function
+case "$1" in
+    start)
+        if is_process_running; then
+            echo "manage_my_process is already running."
+        else
+            ./manage_my_process start
+        fi
+        ;;
+    stop)
+        if is_process_running; then
+            ./manage_my_process stop
+        else
+            echo "manage_my_process is not running."
+        fi
+        ;;
+    restart)
+        ./manage_my_process restart
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0

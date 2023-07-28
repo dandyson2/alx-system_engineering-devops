@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Bash (init) script manage_my_process
+
+
+# Function to start the process
+start_process() {
+    echo "Starting manage_my_process..."
+    ./manage_my_process &      # Run manage_my_process in the background
+    echo $! > /var/run/my_process.pid    # Save the PID of manage_my_process
+    echo "manage_my_process started"
+}
+
+# Function to stop the process
+stop_process() {
+    echo "Stopping manage_my_process..."
+    if [ -f "/var/run/my_process.pid" ]; then
+        pid=$(cat /var/run/my_process.pid)
+        kill $pid   # Send SIGTERM signal to the process
+        rm -f /var/run/my_process.pid   # Remove the PID file
+        echo "manage_my_process stopped"
+    else
+        echo "manage_my_process is not running."
+    fi
+}
+
+# Check for the arguments and call the appropriate function
+case "$1" in
+    start)
+        start_process
+        ;;
+    stop)
+        stop_process
+        ;;
+    restart)
+        stop_process
+        start_process
+        echo "manage_my_process restarted"
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
