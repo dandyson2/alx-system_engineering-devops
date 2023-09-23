@@ -1,0 +1,4 @@
+#SSH configuration that connects to a server without password
+Host SendEnv LANG LC_
+  IdentityFile ~/.ssh/school
+  PasswordAuthentication no
