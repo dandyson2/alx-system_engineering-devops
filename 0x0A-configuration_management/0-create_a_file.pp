@@ -1,8 +1,8 @@
 # Manifest for creating a file at /tmp
-file_resource:
-  path: '/tmp/school'
-  ensure: 'file'
-  owner: 'www-data'
-  group: 'www-data'
-  mode: '0744'
-  content: 'I love Puppet'
+file { '/tmp/school':
+    ensure  => 'file',
+    owner   => 'www-data',
+    group   => 'www-data',
+    mode    => '0744',
+    content => 'I love Puppet',
+}
