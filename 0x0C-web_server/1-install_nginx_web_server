@@ -1,31 +1,22 @@
 #!/usr/bin/env bash
 # Installing nginx on web-01
 
-# Update the package repository
-sudo apt update
+# This script installs and configures the Nginx web server
 
-# Install Nginx
-sudo apt install -y nginx
+# Update the package list
+sudo apt-get update
 
-# Start Nginx (it won't use systemctl for restarting)
+# Install Nginx with the '-y' flag for automatic yes to prompts
+sudo apt-get -y install nginx
+
+# Allow incoming HTTP traffic to Nginx
+sudo ufw allow 'Nginx HTTP'
+
+# Create a simple HTML file with "Hello World!"
+echo "Hello World!" | sudo tee /var/www/html/index.html >/dev/null
+
+# Start the Nginx service
 sudo service nginx start
 
-# Configure Nginx to listen on port 80
-sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/default
-server {
-    listen 80;
-    server_name _;
-    location / {
-        echo "Hello World!";
-    }
-}
-EOF'
-
-# Reload Nginx to apply the configuration
-sudo service nginx reload
-
-# Test Nginx by querying it with curl
-curl -sS http://localhost | grep "Hello World!"
-
-# Clean up and exit
-exit 0
+# Display a message to indicate the installation is complete
+echo "Nginx is now installed and running. You can access your web server at http://your_server_ip/"
