@@ -1,22 +1,7 @@
 #!/usr/bin/env bash
-# Installing nginx on web-01
-
-# This script installs and configures the Nginx web server
-
-# Update the package list
-sudo apt-get update
-
-# Install Nginx with the '-y' flag for automatic yes to prompts
-sudo apt-get -y install nginx
-
-# Allow incoming HTTP traffic to Nginx
-sudo ufw allow 'Nginx HTTP'
-
-# Create a simple HTML file with "Hello World!"
-echo "Hello World!" | sudo tee /var/www/html/index.html >/dev/null
-
-# Start the Nginx service
-sudo service nginx start
-
-# Display a message to indicate the installation is complete
-echo "Nginx is now installed and running. You can access your web server at http://your_server_ip/"
+# Installs nginx server
+apt-get update
+apt-get -y install nginx
+ufw allow 'Nginx HTTP'
+echo "Hello World!" > /var/www/html/index.html
+service nginx start
