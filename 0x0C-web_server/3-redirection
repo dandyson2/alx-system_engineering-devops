@@ -1,39 +1,12 @@
 #!/usr/bin/env bash#!/bin/bash
-# Update package list and install Nginx
+#!/usr/bin/env bash
+# Script that configures a new Ubuntu machine to respect above requirements
+
 sudo apt-get update
 sudo apt-get install -y nginx
 
-# Create a custom HTML page for redirection (you can customize this)
-echo "This page has moved permanently. Please visit the new page <a href='https://newwebsite.com'>here</a>." | sudo tee /var/www/html/redirect.html
+echo "Hello World!" | sudo tee /var/www/html/index.html
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.blog.ehoneahobed.com permanent;"
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
 
-# Configure Nginx to perform the redirection
-nginx_config="server {
-    listen 80 default_server;
-    server_name _;
-
-    location /redirect_me {
-        return 301 https://newwebsite.com$request_uri;
-    }
-
-    error_page 404 /404.html;
-    location = /404.html {
-        root /var/www/html;
-        internal;
-    }
-
-    location / {
-        root /var/www/html;
-        index index.html;
-    }
-}"
-
-echo -e "$nginx_config" | sudo tee /etc/nginx/sites-available/default
-
-# Create a symbolic link to enable the site configuration
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
-
-# Test the Nginx configuration
-sudo nginx -t
-
-# Restart Nginx to apply changes
 sudo service nginx restart
