@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Update system and install Nginx
 sudo apt-get update
 sudo apt-get -y install nginx
@@ -31,4 +30,3 @@ sudo sed -i "s/listen 80 default_server;/$error_page_config/" "$nginx_config"
 
 # Restart Nginx to apply changes
 sudo service nginx restart
-
