@@ -1,12 +1,9 @@
-# Description: Puppet manifest to automate the creation of a custom HTTP header response in Nginx
+# Use Puppet to automate the task of creating a custom HTTP header response
 
-# Ensure the system packages are updated
-exec {'update_packages':
+exec {'update':
   command => '/usr/bin/apt-get update',
 }
-
-# Ensure Nginx is installed and configured with a custom HTTP header
-package {'nginx':
+-> package {'nginx':
   ensure => 'present',
 }
 -> file_line { 'http_header':
@@ -14,8 +11,6 @@ package {'nginx':
   match => 'http {',
   line  => "http {\n\tadd_header X-Served-By \"${hostname}\";",
 }
-
-# Restart Nginx service to apply configuration changes
-exec {'restart_nginx':
+-> exec {'run':
   command => '/usr/sbin/service nginx restart',
 }
