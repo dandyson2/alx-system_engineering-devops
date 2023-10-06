@@ -1,36 +1,18 @@
 #!/usr/bin/env bash
-#Bash script that will display information about subdomains
-# Function to display DNS information for a subdomain
-dns_config() {
-    domain="$1"
-    subdomain="$2"
-    
-    # Use dig to query DNS information for the subdomain
-    dns_info=$(dig "$subdomain.$domain" +short)
+# write a Bash script that will display information about the subdomains
 
-    # Check if DNS information is available
-    if [ -n "$dns_info" ]; then
-        # Determine the record type (A, CNAME, etc.)
-        record_type=$(dig "$subdomain.$domain" +short | head -n1 | awk '{print toupper($1)}')
-
-        # Display the subdomain, record type, and IP address
-        echo "The subdomain $subdomain is a $record_type record and points to $dns_info"
-    else
-        # If no DNS information is found, display an error message
-        echo "No DNS information found for subdomain $subdomain"
-    fi
+dns_config () {
+    script=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
+    echo "$2 $script" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
 }
 
-# Check the number of command line arguments
-if [ "$#" == 1 ]; then
+if [ "$#" == 1 ]
+then
   dns_config "$1" "www"
   dns_config "$1" "lb-01"
   dns_config "$1" "web-01"
   dns_config "$1" "web-02"
-elif [ "$#" == 2 ]; then
+elif [ "$#" == 2 ]
+then
   dns_config "$1" "$2"
-else
-  # Display usage message if the number of arguments is incorrect
-  echo "Usage: $0 <domain> [subdomain]"
-  exit 1
 fi
