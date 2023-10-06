@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#Bash script that will display information about subdomains
+dns_config() {
+    local domain="$1"
+    local subdomain="$2"
+    local result=$(dig +short "$subdomain.$domain")
+    local record_type=$(dig "$subdomain.$domain" +short | awk '{print $2}')
+    
+    if [ -z "$result" ]; then
+        echo "No information found for subdomain '$subdomain.$domain'"
+    else
+        echo "The subdomain $subdomain.$domain is a $record_type record and points to $result"
+    fi
+}
+
+if [ "$#" == 1 ]; then
+    subdomains=("www" "lb-01" "web-01" "web-02")
+    for subdomain in "${subdomains[@]}"; do
+        dns_config "$1" "$subdomain"
+    done
+elif [ "$#" == 2 ]; then
+    dns_config "$1" "$2"
+else
+    echo "Usage: $0 <domain> [subdomain]"
+fi
