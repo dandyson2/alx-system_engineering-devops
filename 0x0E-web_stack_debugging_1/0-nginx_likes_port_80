@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # Script to debug nginx port 80
-
 # Remove the existing default configuration and create a symbolic link to the available configuration
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
 # Restart nginx service
 sudo service nginx restart
