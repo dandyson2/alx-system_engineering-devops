@@ -6,13 +6,15 @@ Returns to-do list information for a given employee ID.
 import requests
 import sys
 
+
 def get_todo_list(employee_id):
     url = "https://jsonplaceholder.typicode.com/"
     user = requests.get(url + "users/{}".format(employee_id)).json()
     todos = requests.get(url + "todos", params={"userId": employee_id}).json()
 
-    completed_tasks = [task.get("title") for task in todos if task.get("completed")]
+    completed_tasks = [task.get("title") for task in todos if task.get("com")]
     return user, completed_tasks, len(todos)
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
